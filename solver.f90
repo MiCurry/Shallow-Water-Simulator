@@ -1,12 +1,16 @@
 program solver
 
     use observer
+    use settings_mod
 
     implicit none
 
-    call observer_init("example.nc", 10, 10)
+    type(Settings_class) :: settings
 
+    call settings % initalize("namelist.input")
 
-    call observer_finalize()
+    call observer_init(settings % filename, settings % nx, settings % ny)
+
+    call observer_finialize()
 
 end program solver

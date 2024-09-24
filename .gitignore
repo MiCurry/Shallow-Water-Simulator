@@ -1,0 +1,5 @@
+*.mod
+*.o
+*.nc
+sw_sim
+*.swp

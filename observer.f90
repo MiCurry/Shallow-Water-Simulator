@@ -6,7 +6,7 @@ module observer
 
     private
 
-    public :: observer_init, observer_finalize
+    public :: observer_init, observer_finialize 
     public :: observer_write_height, observer_write_u, observer_write_v
 
     character (len=80) :: fname
@@ -14,6 +14,7 @@ module observer
     integer :: ncid
     integer :: hvar, uvar, vvar
     integer :: n_xDims, n_yDims
+    integer :: u_var_id, v_var_id, h_var_id
 
     contains
 
@@ -21,13 +22,14 @@ module observer
 
         implicit none
 
+        character (len=80) :: filename
         integer, intent(in) :: nx, ny
 
         integer :: ierr
         integer :: time_dim_id, nx_dim_id, ny_dim_id
-        
-        integer :: u_var_id, v_var_id, h_var_id
 
+        
+        fname = filename
         n_xDims = nx
         n_yDims = ny
 
@@ -105,7 +107,7 @@ module observer
         integer :: ierr
 
         ! Write the height
-        ierr = nf90_put_var(ncid, h_var_id, height, start=(/1,1,t/), count=(/nx,ny,1/))
+        ierr = nf90_put_var(ncid, h_var_id, height, start=(/1,1,t/), count=(/n_xDims,n_yDims,1/))
         if (ierr /= NF90_NOERR) then
             write(0,*) '*********************************************************************************'
             write(0,*) 'Error writing var "height" for for file: '//fname
@@ -126,7 +128,7 @@ module observer
         integer :: ierr
 
         ! Write the height
-        ierr = nf90_put_var(ncid, u_var_id, u, start=(/1,1,t/), count=(/nx,ny,1/))
+        ierr = nf90_put_var(ncid, u_var_id, u, start=(/1,1,t/), count=(/n_xDims,n_yDims,1/))
         if (ierr /= NF90_NOERR) then
             write(0,*) '*********************************************************************************'
             write(0,*) 'Error writing var "u" for for file: '//fname
@@ -147,7 +149,7 @@ module observer
         integer :: ierr
 
         ! Write the height
-        ierr = nf90_put_var(ncid, u_var_id, v, start=(/1,1,t/), count=(/nx,ny,1/))
+        ierr = nf90_put_var(ncid, u_var_id, v, start=(/1,1,t/), count=(/n_xDims,n_yDims,1/))
         if (ierr /= NF90_NOERR) then
             write(0,*) '*********************************************************************************'
             write(0,*) 'Error writing var "v" for for file: '//fname

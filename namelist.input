@@ -1,0 +1,9 @@
+&io
+    filename = "output.nc"
+/
+&sw_sim
+    nx = 10
+    ny = 10
+    nsteps = 100
+    dt = 1
+/

@@ -6,8 +6,13 @@ module settings_mod
     integer :: fid
 
     type, public :: Settings_class
-        character (len=80) :: filename
         integer, private :: fid
+
+        ! IO
+        character (len=80) :: filename
+        integer :: output_frequency
+
+        ! Simulator
         integer :: nx, ny
         integer :: nsteps
         integer :: dt
@@ -42,11 +47,13 @@ contains
         class(Settings_class), intent(inout) :: this
 
         character (len=80) :: filename
+        integer :: output_frequency
 
-        namelist /io/ filename
+        namelist /io/ filename, output_frequency
         read(this % fid, io)
 
         this%filename = filename
+        this%output_frequency = output_frequency
 
     end subroutine read_io
 

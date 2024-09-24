@@ -1,9 +1,10 @@
 &io
     filename = "output.nc"
+    output_frequency = 1
 /
 &sw_sim
     nx = 10
     ny = 10
-    nsteps = 100
+    nsteps = 10
     dt = 1
 /

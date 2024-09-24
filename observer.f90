@@ -96,22 +96,31 @@ module observer
             stop
         end if
 
+        ierr = nf90_enddef(ncid)
+        if (ierr /= NF90_NOERR) then
+            write(0,*) '*********************************************************************************'
+            write(0,*) 'Error calling enddef: '//fname
+            write(0,*) 'ierr = ', nf90_strerror(ierr)
+            write(0,*)'*********************************************************************************'
+            stop
+        end if
+
     end subroutine observer_init
 
     subroutine observer_write_height(height, t)
 
         implicit none
 
-        real, dimension(:), intent(in) :: height
+        real, dimension(:,:), intent(in) :: height
         integer, intent(in) :: t
         integer :: ierr
 
         ! Write the height
-        ierr = nf90_put_var(ncid, h_var_id, height, start=(/1,1,t/), count=(/n_xDims,n_yDims,1/))
+        ierr = nf90_put_var(ncid, h_var_id, height(:,:), start=(/1,1, t/), count=(/n_xDims,n_yDims,1/))
         if (ierr /= NF90_NOERR) then
             write(0,*) '*********************************************************************************'
             write(0,*) 'Error writing var "height" for for file: '//fname
-            write(0,*) 'ierr = ', ierr
+            write(0,*) 'ierr = ', nf90_strerror(ierr)
             write(0,*)'*********************************************************************************'
             stop
         end if
@@ -123,7 +132,7 @@ module observer
 
         implicit none
 
-        real, dimension(:), intent(in) :: u
+        real, dimension(:,:), intent(in) :: u
         integer, intent(in) :: t
         integer :: ierr
 
@@ -144,7 +153,7 @@ module observer
 
         implicit none
 
-        real, dimension(:), intent(in) :: v
+        real, dimension(:,:), intent(in) :: v
         integer, intent(in) :: t
         integer :: ierr
 

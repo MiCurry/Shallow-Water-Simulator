@@ -3,3 +3,4 @@
 *.nc
 sw_sim
 *.swp
+.*.*.sw*

@@ -1,10 +1,17 @@
 &io
-    filename = "output.nc"
-    output_frequency = 1
+    filename = "my_output.nc"
+    output_frequency = 10
 /
 &sw_sim
-    nx = 10
-    ny = 10
-    nsteps = 10
-    dt = 1
+    nx = 200
+    ny = 200
+    nsteps = 5000
+    dt = 20
+    dx = 60.0
+/
+&solver
+    perform_nan_check = .True.
+    nan_check_freq = 10
+    perform_report = .True.
+    report_freq = 10
 /

@@ -3,7 +3,6 @@ module settings_mod
     implicit none
     
     private
-    integer :: fid
 
     type, public :: Settings_class
         integer, private :: fid
@@ -15,7 +14,16 @@ module settings_mod
         ! Simulator
         integer :: nx, ny
         integer :: nsteps
-        integer :: dt
+        real :: dt
+        real :: dx
+
+        ! Solver
+        logical :: perform_nan_check
+        integer :: nan_check_freq
+
+        logical :: perform_report
+        integer :: report_freq
+
      contains
         procedure :: initalize => initalize
     end type Settings_class
@@ -35,6 +43,7 @@ contains
 
         call read_io(this)
         call read_swater_sim(this)
+        call read_solver(this)
 
         close(this % fid)
 
@@ -65,16 +74,41 @@ contains
 
         integer :: nx, ny
         integer :: nsteps
-        integer :: dt
+        real :: dt
+        real :: dx
 
-        namelist /sw_sim/ nx, ny, nsteps, dt
+        namelist /sw_sim/ nx, ny, nsteps, dt, dx
         read(this % fid, sw_sim)
 
         this % nx = nx
         this % ny = ny
         this % nsteps = nsteps
         this % dt = dt
+        this % dx = dx
 
-    end subroutine
+    end subroutine read_swater_sim
+
+    subroutine read_solver(this)
+
+        implicit none
+
+        class(Settings_class), intent (inout) :: this
+
+        logical :: perform_nan_check
+        integer :: nan_check_freq
+
+        logical :: perform_report
+        integer :: report_freq
+
+        namelist /solver/ perform_nan_check, nan_check_freq, perform_report, report_freq
+        read(this % fid, solver)
+
+        this % perform_nan_check = perform_nan_check
+        this % nan_check_freq = nan_check_freq
+
+        this % perform_report = perform_report 
+        this % report_freq = report_freq
+
+    end subroutine read_solver
 
 end module settings_mod

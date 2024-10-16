@@ -3,3 +3,5 @@
 *.nc
 sw_sim
 *.swp
+.*.sw*
+*.dSYM/

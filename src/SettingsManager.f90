@@ -77,4 +77,4 @@ contains
 
     end subroutine
 
-end module settings_mod
+end module SWS_Settings_module

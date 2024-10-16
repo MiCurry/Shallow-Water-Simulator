@@ -1,11 +1,11 @@
 
 all: orchastrator settingsManager
 
-runner: Runner.f90
-	mpifort $(FLAGS) -o sw_runner Orchestrator.o SettingsManager.o
+orchastrator: settingsManager SWS_Orchastrator.f90
+	mpifort $(FLAGS) -o sws_runner SWS_Orchastrator.f90 SettingsManager.o
 
-orchastrator: Orchestrator.f90
-	mpifort $(FLAGS) -c Orchestrator.f90
-
-settingsManager: settings.f90
+settingsManager: settingsManager.f90
 	mpifort $(FLAGS) -c SettingsManager.f90
+
+clean:
+	rm *.o *.mod

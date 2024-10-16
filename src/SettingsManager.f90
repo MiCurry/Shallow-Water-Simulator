@@ -1,11 +1,11 @@
-module settings_mod
+module SWS_Settings_module
 
     implicit none
     
     private
     integer :: fid
 
-    type, public :: Settings_class
+    type, public :: SWS_Settings 
         integer, private :: fid
 
         ! IO
@@ -18,14 +18,14 @@ module settings_mod
         integer :: dt
      contains
         procedure :: initalize => initalize
-    end type Settings_class
+    end type SWS_Settings
 
 contains
 
     subroutine initalize(this, filename)
         implicit none
 
-        class(Settings_class), intent(inout) :: this
+        class(SWS_Settings), intent(inout) :: this
         character (len=*), intent(in) :: filename
 
 
@@ -44,7 +44,7 @@ contains
 
         implicit none
 
-        class(Settings_class), intent(inout) :: this
+        class(SWS_Settings), intent(inout) :: this
 
         character (len=80) :: filename
         integer :: output_frequency
@@ -61,7 +61,7 @@ contains
         
         implicit none
 
-        class(Settings_class), intent(inout) :: this
+        class(SWS_Settings), intent(inout) :: this
 
         integer :: nx, ny
         integer :: nsteps

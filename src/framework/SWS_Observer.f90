@@ -1,4 +1,4 @@
-module observer
+module SWS_Observer_module
 
     use netcdf
 
@@ -186,4 +186,4 @@ module observer
 
     end subroutine observer_finialize
 
-end module observer
+end module SWS_Observer_module

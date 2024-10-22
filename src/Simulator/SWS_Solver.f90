@@ -2,24 +2,32 @@ module SWS_Solver_module
 
     implicit none
 
-    public euler_equation, rk4
-    enum, bind(c) :: solver_types
-        enumerator :: euler_equation
-        enumerator :: rk4
-    end enum
+    type, public :: SWS_Solver
+        integer :: nx, ny, dt
+        procedure (SWS_Solver_func_interface), pointer :: solver
+        ! SWS Simulator
+    contains
+        procedure :: init => solver_init
+    end type SWS_Solver
 
     abstract interface
-        subroutine SWS_Solver_func_interface(dt, state)
+        function SWS_f_interface(time, state) result(f)
+            real, intent(in) :: time
+            real, dimension(:,:,:), intent(in) :: state
+            real, dimension(size(state,1), size(state,2), size(state,3)) :: f
+        end function SWS_f_interface
+    end interface
+
+    abstract interface
+        subroutine SWS_Solver_func_interface(this, dt, state)
+            import SWS_Solver
+            class(SWS_Solver), intent(inout) :: this
             real, intent(in) :: dt
             real, dimension(:,:,:), intent(inout) :: state
         end subroutine SWS_Solver_func_interface
     end interface
-    
-    type, public :: SWS_Solver
-        procedure (SWS_Solver_func_interface) :: solver
-    contains
-        procedure init => solver_init
-    end type SWS_Solver
+
+
 
     type, public :: SWS_Euler
         real, dimension(:,:,:), allocatable :: k1, k2, k3, k4
@@ -27,6 +35,8 @@ module SWS_Solver_module
         procedure :: init => euler_init
         procedure :: euler => euler
     end type SWS_Euler
+
+contains
 
     subroutine solver_init(this, nx, ny, dt, solver_type)
 
@@ -36,32 +46,36 @@ module SWS_Solver_module
         integer, intent(in) :: nx
         integer, intent(in) :: ny
         real, intent(in) :: dt
-        integer (solver_types), intent(in) :: solver_type
+        character (len=80), intent(in) :: solver_type
 
         this % nx = nx
         this % ny = ny
         this % dt = dt
 
-        if (solver_type == euler_equation) then
-            this % solver => euler
+        if (solver_type == "euler") then
+        !    this % solver => euler
         else
-            this % solver => rk4_solver
+        !    this % solver => rk4_solver
         end if
 
     end subroutine
 
-    subroutine euler_init()
+    subroutine euler_init(this)
 
         implicit none
+
+        class(SWS_Euler), intent(inout) :: this
 
     end subroutine
 
-    subroutine euler(dt, state)
+    subroutine euler(this, dt, state, f)
 
         implicit none
 
+        class(SWS_Euler), intent(inout) :: this
         real, intent(in) :: dt
         real, dimension(:,:,:), pointer, intent(inout) :: state
+        procedure (SWS_f_interface) :: f
 
         integer :: i
         integer :: nx, ny

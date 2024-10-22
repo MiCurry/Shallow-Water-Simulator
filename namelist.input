@@ -2,9 +2,12 @@
     filename = "output.nc"
     output_frequency = 1
 /
-&sw_sim
+&simulator
     nx = 10
     ny = 10
     nsteps = 10
     dt = 1
+/
+&solver
+    solver_choice = "euler"
 /

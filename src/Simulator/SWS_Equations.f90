@@ -1,4 +1,4 @@
-module shallow_water
+module SWS_Equations_module
     
     implicit none
 
@@ -7,10 +7,19 @@ module shallow_water
     integer, parameter :: U = 2
     integer, parameter :: V = 3
 
+    type, public :: SWS_Equations
+        real :: dx
+        real :: g = 9.806
+        logical :: periodicity = .true.
+    contains
+        procedure :: f => f
+    end type SWS_Equations
+
     contains
 
-    function f(time, s)
+    function f(this, time, s)
 
+        class (SWS_Equations), intent(inout) :: this
         real, intent(in) :: time
         real, dimension(:,:,:), intent(in) :: s
         real, dimension(size(s,1),size(s,2),size(s,3)) :: f
@@ -18,10 +27,12 @@ module shallow_water
         integer :: i,j
         integer :: im, ip, jm, jp ! Periodicity 
         real :: dx
-        real, parameter :: g = 9.806
+        real :: g = 9.806
 
         f = 0
-        dx = 100
+
+        dx = this % dx
+        g = this % g
 
         do j = 1, size(s, 2), 1
             do i = 1, size(s, 1), 1
@@ -66,4 +77,4 @@ module shallow_water
        end do
     end function 
 
-end module shallow_water
+end module SWS_Equations_module

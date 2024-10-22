@@ -1,10 +1,9 @@
-FLAGS = -g $(shell nf-config --flibs) -std=f2003 -Wall -Wunused-dummy-argument -fbacktrace -fbounds-check
+FLAGS = -g $(shell nf-config --flibs) -std=f2003  -fbacktrace -fbounds-check -fno-leading-underscore
 
 all: 
-	( cd src; $(MAKE) FLAGS="$(FLAGS)" all )
-	( mv src/sws_runner . )
+	$(MAKE) -C src
+	cp src/sws_runner sws_runner
 
 clean:
-	( cd src; $(MAKE) clean )
 	rm sws_runner
-
+	$(MAKE) -C src clean

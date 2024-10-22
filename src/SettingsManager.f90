@@ -16,6 +16,10 @@ module SWS_Settings_module
         integer :: nx, ny
         integer :: nsteps
         integer :: dt
+
+        ! Solver
+        character (len=80) :: solver_choice
+
      contains
         procedure :: initalize => initalize
     end type SWS_Settings
@@ -31,10 +35,11 @@ contains
 
         this % filename = filename
         this % fid = 42
-        open(this % fid, file='namelist.input',status='old',form='formatted',action='read')
+        open(this % fid, file="namelist.input", status='old',form='formatted',action='read')
 
         call read_io(this)
         call read_swater_sim(this)
+        call read_solver(this)
 
         close(this % fid)
 
@@ -67,8 +72,8 @@ contains
         integer :: nsteps
         integer :: dt
 
-        namelist /sw_sim/ nx, ny, nsteps, dt
-        read(this % fid, sw_sim)
+        namelist /simulator/ nx, ny, nsteps, dt
+        read(this % fid, simulator)
 
         this % nx = nx
         this % ny = ny
@@ -76,5 +81,20 @@ contains
         this % dt = dt
 
     end subroutine
+
+    subroutine read_solver(this)
+
+        implicit none
+
+        class(SWS_Settings), intent(inout) :: this
+
+        character (len=80) :: solver_choice
+
+        namelist /solver/ solver_choice
+        read(this % fid, solver)
+
+        this % solver_choice = solver_choice
+
+    end subroutine read_solver
 
 end module SWS_Settings_module

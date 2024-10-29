@@ -1,5 +1,7 @@
 module SWS_DataManager_module
 
+    use SWS_Observer_module
+
     implicit none
 
     type, public :: SWS_DataManager

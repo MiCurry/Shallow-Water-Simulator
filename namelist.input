@@ -3,10 +3,12 @@
     output_frequency = 1
 /
 &simulator
-    nx = 10
-    ny = 10
-    nsteps = 10
+    g = 9.806
+    nx = 5
+    ny = 5
+    nsteps = 0
     dt = 1
+    dx = 60
 /
 &solver
     solver_choice = "euler"

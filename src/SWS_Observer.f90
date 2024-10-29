@@ -158,7 +158,7 @@ module SWS_Observer_module
         integer :: ierr
 
         ! Write the height
-        ierr = nf90_put_var(ncid, u_var_id, v, start=(/1,1,t/), count=(/n_xDims,n_yDims,1/))
+        ierr = nf90_put_var(ncid, v_var_id, v, start=(/1,1,t/), count=(/n_xDims,n_yDims,1/))
         if (ierr /= NF90_NOERR) then
             write(0,*) '*********************************************************************************'
             write(0,*) 'Error writing var "v" for for file: '//fname

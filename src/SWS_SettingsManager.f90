@@ -13,9 +13,11 @@ module SWS_Settings_module
         integer :: output_frequency
 
         ! Simulator
+        real :: g ! Gravity
         integer :: nx, ny
         integer :: nsteps
         integer :: dt
+        real :: dx
 
         ! Solver
         character (len=80) :: solver_choice
@@ -68,17 +70,21 @@ contains
 
         class(SWS_Settings), intent(inout) :: this
 
+        real :: g
         integer :: nx, ny
         integer :: nsteps
         integer :: dt
+        real :: dx
 
-        namelist /simulator/ nx, ny, nsteps, dt
+        namelist /simulator/ g, nx, ny, nsteps, dt, dx
         read(this % fid, simulator)
 
+        this % g = g
         this % nx = nx
         this % ny = ny
         this % nsteps = nsteps
         this % dt = dt
+        this % dx = dx
 
     end subroutine
 

@@ -2,6 +2,8 @@ module SWS_Equations_module
     
     implicit none
 
+    public
+
     ! Dimensions
     integer, parameter :: H = 1
     integer, parameter :: U = 2

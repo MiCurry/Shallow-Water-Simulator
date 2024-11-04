@@ -54,14 +54,11 @@ subroutine initalize(this, namelist_filename)
     this % data % ny = this % settings % ny
 
     ! Allocate and Initalize State 
-    allocate(this % data % state(this % data % ny, this % data % nx, 3))
+    allocate(this % data % state(this % data % nx, this % data % ny, 3))
+    this % data % state(:,:,:) = 0.0
     call this % initalize_h(this % data % state)
     call this % initalize_u(this % data % state)
     call this % initalize_v(this % data % state)
-
-    write(0,*) this % data % state(:,:,1)
-    write(0,*) this % data % state(:,:,2)
-    write(0,*) this % data % state(:,:,3)
 
     write(0,*) "Step: ", this % data % step
     write(0,*) "nSteps: ",  this % data % nSteps
@@ -88,7 +85,7 @@ subroutine initalize_h(this, state)
 
     do i = 1, this % data % ny, 1
         do j = 1, this % data % nx, 1
-            state(i,j,H) = 1
+            state(i,j,H) = 10 + i
         end do
     end do
 
@@ -105,7 +102,7 @@ subroutine initalize_u(this, state)
 
     do i = 1, this % data % ny, 1
         do j = 1, this % data % nx, 1
-            state(i,j,U) = 2
+            state(i,j,U) = 1
         end do
     end do
 
@@ -122,7 +119,7 @@ subroutine initalize_v(this, state)
 
     do i = 1, this % data % ny, 1
         do j = 1, this % data % nx, 1
-            state(i,j,V) = 3
+            state(i,j,V) = 1
         end do
     end do
 
@@ -151,17 +148,16 @@ subroutine simulator_loop(this)
     do step = this % data % step, this % data % nsteps, 1
         this % data % step = step
 
-        write(0,*) "In Step: ", this % data % step
+        write(0,*) "In Step: ", this % data % step 
         call this % solver % solver(this % data % dt, this % data % state)
 
 
-        write(0,*) mod(this % settings % output_frequency, step)
-        if (mod(this % settings % output_frequency, step) == 1) then
-            write(0,*) "Time to write output!"
-            time = time + 1 
+        if (mod(step, this % settings % output_frequency) == 0) then
+            write(0,*) "Time to write output: ", time
             call observer_write_height(this % data % state(:,:,H), time)
             call observer_write_u(this % data % state(:,:,U), time)
             call observer_write_v(this % data % state(:,:,V), time)
+            time = time + 1 
         end if
     end do
 

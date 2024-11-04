@@ -85,14 +85,22 @@ contains
         nx = size(state, 2)
         ny = size(state, 1)
 
-        allocate(k1(ny, nx, 3))
-        allocate(k2(ny, nx, 3))
-        allocate(k3(ny, nx, 3))
-        allocate(k4(ny, nx, 3))
+        allocate(k1(nx, ny, 3))
+        allocate(k2(nx, ny, 3))
+        allocate(k3(nx, ny, 3))
+        allocate(k4(nx, ny, 3))
+
+        k1(:,:,:) = 0.0
+        k2(:,:,:) = 0.0
+        k3(:,:,:) = 0.0
+        k4(:,:,:) = 0.0
 
         k1 = dt * this % sws_equations % f(dt, state(:,:,:))
+
         k2 = dt * this % sws_equations % f(dt, state(:,:,:) + k1 / 2.0)
+
         k3 = dt * this % sws_equations % f(dt, state(:,:,:) + k2 / 2.0)
+
         k4 = dt * this % sws_equations % f(dt, state(:,:,:) + k3)
 
         state(:,:,:) = state(:,:,:) + 1.0 / 6.0 * k1 + 1.0 / 3.0 * k2 + 1.0 / 3.0 * k3 + 1.0 / 6.0 * k4

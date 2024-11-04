@@ -4,11 +4,11 @@
 /
 &simulator
     g = 9.806
-    nx = 5
-    ny = 5
-    nsteps = 0
+    nx = 100
+    ny = 100
+    nsteps = 1000
     dt = 1
-    dx = 60
+    dx = 10000
 /
 &solver
     solver_choice = "euler"

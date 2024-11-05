@@ -4,6 +4,7 @@ module SWS_Simulator_module
     use SWS_DataManager_module
     use SWS_Equations_module
     use SWS_Settings_module
+    use SWS_Observer_module
 
     implicit none
 
@@ -25,22 +26,25 @@ module SWS_Simulator_module
         type (SWS_Equations) :: sws_equations
         type (SWS_Sim_Data) :: data
     contains
-        procedure :: init => initalize
+        procedure :: init => sim_initalize
         procedure :: initalize_h 
         procedure :: initalize_u
         procedure :: initalize_v
         procedure :: start => simulator_loop
+        procedure :: finalize => sim_finalize
     end type SWS_Simulator
 
 contains
 
-subroutine initalize(this, namelist_filename)
+subroutine sim_initalize(this, namelist_filename)
     implicit none
 
     class(SWS_Simulator), intent(inout) :: this
     character (len=*), intent(in) :: namelist_filename
 
     call this % settings % initalize(namelist_filename)
+
+    call this % datamgr % init()
 
     ! Initalize Data
     allocate(this % data % step)
@@ -72,7 +76,7 @@ subroutine initalize(this, namelist_filename)
 
     call observer_init(this % settings % filename, this % data % nx, this % data % ny)
 
-end subroutine initalize
+end subroutine sim_initalize
 
 subroutine initalize_h(this, state)
 
@@ -201,5 +205,14 @@ subroutine do_nan_checking(this)
 
 end subroutine do_nan_checking
 
+subroutine sim_finalize(this)
+
+    implicit none
+
+    class(SWS_Simulator), intent(inout) :: this
+
+    call this % datamgr % finialize()
+
+end subroutine sim_finalize
 
 end module SWS_Simulator_module

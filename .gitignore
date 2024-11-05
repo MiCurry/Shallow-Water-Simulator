@@ -1,6 +1,13 @@
+# Application
+sws_runner
+sw_sim
+*.a
 *.mod
 *.o
 *.nc
-sw_sim
+
+# Vim, IDE, OS Files
 *.swp
 .*.*.sw*
+*.dSYM/
+*.vscode

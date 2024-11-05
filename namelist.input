@@ -2,16 +2,17 @@
     filename = "my_output.nc"
     output_frequency = 10
 /
-&sw_sim
-    nx = 200
-    ny = 200
-    nsteps = 5000
-    dt = 20
-    dx = 60.0
+&simulator
+    g = 9.806
+    nx = 100
+    ny = 100
+    nsteps = 1000
+    dt = 1
+    dx = 10000
 /
 &solver
-    perform_nan_check = .True.
-    nan_check_freq = 10
-    perform_report = .True.
-    report_freq = 10
+    solver_choice = "euler"
+/
+&datamgr
+    nan_check_freq = 1
 /

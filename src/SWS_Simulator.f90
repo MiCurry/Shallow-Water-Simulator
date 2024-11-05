@@ -151,6 +151,10 @@ subroutine simulator_loop(this)
         write(0,*) "In Step: ", this % data % step 
         call this % solver % solver(this % data % dt, this % data % state)
 
+        if (mod(step, this % settings % nan_check_freq) == 0) then
+            call do_nan_checking(this)
+        end if 
+
 
         if (mod(step, this % settings % output_frequency) == 0) then
             write(0,*) "Time to write output: ", time
@@ -164,12 +168,38 @@ subroutine simulator_loop(this)
     call observer_finialize()
 end subroutine
 
-subroutine do_time_step(this)
+subroutine do_nan_checking(this)
 
     implicit none
 
     class(SWS_Simulator), intent(inout) :: this
+    logical nan
 
-end subroutine
+    nan = .false.
+
+    write(0,*) "Performing nan check ..."
+
+    if (this % datamgr % nan_check(this % data % state(:,:,H))) then
+        write(0,*) "NaN dected in the 'Height (H)' field"
+        nan = .true.
+    end if
+
+    if (this % datamgr % nan_check(this % data % state(:,:,V))) then
+        write(0,*) "NaN dected in the 'v' field"
+        nan = .true.
+    end if
+
+    if (this % datamgr % nan_check(this % data % state(:,:,U))) then
+        write(0,*) "NaN dected in the 'u' field"
+        nan = .true.
+    end if
+
+    if (nan) then
+        write(0,*) "Stopping the model"
+        stop
+    end if
+
+end subroutine do_nan_checking
+
 
 end module SWS_Simulator_module

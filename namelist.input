@@ -13,3 +13,6 @@
 &solver
     solver_choice = "euler"
 /
+&datamgr
+    nan_check_freq = 1
+/

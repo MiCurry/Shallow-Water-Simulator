@@ -12,6 +12,9 @@ module SWS_Settings_module
         character (len=80) :: filename
         integer :: output_frequency
 
+        ! Data Manager
+        integer :: nan_check_freq
+
         ! Simulator
         real :: g ! Gravity
         integer :: nx, ny
@@ -42,6 +45,7 @@ contains
         call read_io(this)
         call read_swater_sim(this)
         call read_solver(this)
+        call read_datamgr(this)
 
         close(this % fid)
 
@@ -102,5 +106,20 @@ contains
         this % solver_choice = solver_choice
 
     end subroutine read_solver
+
+    subroutine read_datamgr(this)
+
+        implicit none
+
+        class(SWS_Settings), intent(inout) :: this
+
+        integer :: nan_check_freq
+
+        namelist /datamgr/ nan_check_freq
+        read(this % fid, datamgr)
+
+        this % nan_check_freq = nan_check_freq
+
+    end subroutine read_datamgr
 
 end module SWS_Settings_module

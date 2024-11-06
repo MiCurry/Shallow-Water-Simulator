@@ -9,7 +9,7 @@ program SWS_Orchastrator
     type (SWS_Simulator) :: simulation
     character (len=*), parameter :: namelist_filename = "namelist.input"
 
-    integer :: timer_id, sec, nsec
+    integer :: timer_id, hours, mins, secs, nsecs
 
     timer_id = 1
 
@@ -26,10 +26,10 @@ program SWS_Orchastrator
     call simulation % finalize()
 
 
-    call end_timer(timer_id, sec, nsec)
+    call end_timer(timer_id, hours, mins, secs, nsecs)
     write(0,*) ""
     write(0,*) ""
-    write(0,*) "Total Time: ", sec, nsec
+    write(0,*) "Total Time: ", hours, mins, secs, nsecs
     write(0,*) "       Shallow Water Simulator Ended"
     write(0,*) "================================================="
 

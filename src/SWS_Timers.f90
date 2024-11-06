@@ -26,7 +26,7 @@ module SWS_Timers_module
 
     end subroutine start_timer
 
-    subroutine end_timer(timer_id, sec, nsec)
+    subroutine end_timer(timer_id, hours, mins, secs, nsecs)
 
         use iso_c_binding, only : c_int
 
@@ -42,15 +42,17 @@ module SWS_Timers_module
 
 
         integer, intent(in) :: timer_id
-        integer, intent(out) :: sec, nsec
+        integer, intent(out) :: hours, mins, secs, nsecs
         integer (c_int) :: timer_id_c, sec_c, nsec_c
 
         timer_id_c = timer_id
 
         call timer_stop(timer_id_c, sec_c, nsec_c)
 
-        sec = sec_c
-        nsec = nsec_c
+        hours = sec_c / 3600
+        mins = (sec_c -(3600 * hours)) / 60
+        secs = sec_c -(3600 * hours) - (mins * 60)
+        nsecs = nsec_c
 
     end subroutine end_timer
 

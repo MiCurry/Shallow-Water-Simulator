@@ -59,7 +59,7 @@ module SWS_Equations_module
                 end if
 
                 ! H Components
-                f(j, i, H) = - (s(j,ip,U) * s(j,ip,H) - s(j,im,V) * s(j,im,H)) / (2.0 * dx)
+                f(j, i, H) = - (s(j,ip,U) * s(j,ip,H) - s(j,im,U) * s(j,im,H)) / (2.0 * dx)
 
                 f(j, i, H) = f(j, i, H) + (-(s(jp,i,V) * s(jp,i,H) - s(jm,i,V) * s(jm,i,H)) / (2.0 * dx))
 

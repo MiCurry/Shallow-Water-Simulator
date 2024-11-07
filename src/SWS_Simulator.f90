@@ -87,8 +87,8 @@ subroutine initalize_h(this, state)
 
     integer :: i, j
 
-    do i = 1, this % data % ny, 1
-        do j = 1, this % data % nx, 1
+    do i = 1, this % data % nx, 1
+        do j = 1, this % data % ny, 1
             if (i > 10 .and. i < 50) then
                 state(i,j,H) = 10
             else
@@ -108,8 +108,8 @@ subroutine initalize_u(this, state)
 
     integer :: i, j
 
-    do i = 1, this % data % ny, 1
-        do j = 1, this % data % nx, 1
+    do i = 1, this % data % nx, 1
+        do j = 1, this % data % ny, 1
             state(i,j,U) = 1
         end do
     end do
@@ -125,8 +125,8 @@ subroutine initalize_v(this, state)
 
     integer :: i, j
 
-    do i = 1, this % data % ny, 1
-        do j = 1, this % data % nx, 1
+    do i = 1, this % data % nx, 1
+        do j = 1, this % data % ny, 1
             state(i,j,V) = 10
         end do
     end do

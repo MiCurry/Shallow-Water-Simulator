@@ -89,7 +89,11 @@ subroutine initalize_h(this, state)
 
     do i = 1, this % data % ny, 1
         do j = 1, this % data % nx, 1
-            state(i,j,H) = 10 + i
+            if (i > 10 .and. i < 50) then
+                state(i,j,H) = 10
+            else
+                state (i,j,H) = 3
+            end if
         end do
     end do
 
@@ -123,7 +127,7 @@ subroutine initalize_v(this, state)
 
     do i = 1, this % data % ny, 1
         do j = 1, this % data % nx, 1
-            state(i,j,V) = 1
+            state(i,j,V) = 10
         end do
     end do
 
@@ -156,7 +160,9 @@ subroutine simulator_loop(this)
         call this % solver % solver(this % data % dt, this % data % state)
 
         if (mod(step, this % settings % nan_check_freq) == 0) then
-            call do_nan_checking(this)
+            if (do_nan_checking(this)) then
+                exit
+            end if
         end if 
 
 
@@ -172,12 +178,12 @@ subroutine simulator_loop(this)
     call observer_finialize()
 end subroutine
 
-subroutine do_nan_checking(this)
+function do_nan_checking(this) result(nan)
 
     implicit none
 
     class(SWS_Simulator), intent(inout) :: this
-    logical nan
+    logical :: nan
 
     nan = .false.
 
@@ -198,12 +204,7 @@ subroutine do_nan_checking(this)
         nan = .true.
     end if
 
-    if (nan) then
-        write(0,*) "Stopping the model"
-        stop
-    end if
-
-end subroutine do_nan_checking
+end function do_nan_checking
 
 subroutine sim_finalize(this)
 

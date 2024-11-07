@@ -1,18 +1,18 @@
 &io
     filename = "my_output.nc"
-    output_frequency = 10
+    output_frequency = 1
 /
 &simulator
     g = 9.806
-    nx = 100
-    ny = 100
-    nsteps = 1000
-    dt = 1
-    dx = 10000
+    nx = 400
+    ny = 400
+    nsteps = 500
+    dt = 100
+    dx = 1000
 /
 &solver
     solver_choice = "euler"
 /
 &datamgr
-    nan_check_freq = 1
+    nan_check_freq = 4
 /
